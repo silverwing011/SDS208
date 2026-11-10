@@ -1,0 +1,2004 @@
+---
+title: "IMDb Top 250 Video Games Explorer"
+subtitle: "Shiny Application and Interactive Data Analysis using R"
+author: |
+  **Team 7**\
+  
+  Adinath Bhadane\
+  
+  Ankit Samanta\
+  
+  Anagh Atri\
+  
+  Chaitanya Malhotra\
+  
+  Deepak Bihani
+  
+  
+  
+  
+date: ""
+institute: "Indian Institute of Technology Kanpur"
+course: "SDS208 — Data Science Lab I"
+guidance: "Dr. Satya Singh"
+output:
+  html_document:
+    toc: false
+    number_sections: true
+    theme: flatly
+    df_print: paged
+    fig_width: 9
+    fig_height: 5.5
+  pdf_document:
+    toc: false
+    number_sections: true
+    geometry: margin=1in
+    fig_width: 6.5
+    fig_height: 4.5
+---
+<h1 style="text-align: center;">Executive Summary</h1>
+
+This project develops an interactive **Shiny application** for exploring the IMDb Top 250 Rated Video Games dataset. The revised project retains the data extraction, cleaning, statistical analysis, and visualization work of the earlier project, but changes the main emphasis from a static exploratory-data-analysis report to an interactive analytical application.
+
+The **Shiny application is the principal deliverable** of the project. It provides grouped plot selection, an Action & Adventure genre switch, dynamic statistical summaries, automatically generated analytical interpretation, and an interactive data table. The user can move between distributions, popularity and ranking, genre analysis, and temporal analysis without changing scripts or rebuilding plots.
+
+The accompanying R Markdown report represents the remaining analytical and documentation component. It explains the data pipeline, application architecture, reactive design, statistical methods, limitations, reproducibility, and interpretation of the application's outputs. The figures included in this report are generated from the same dataset and analytical logic used by the application.
+
+
+
+
+
+
+
+
+
+
+<h1 style="text-align: center;">Contents </h1>
+
+<div style="line-height:1.8;">
+
+<b>1. Approach to the Project</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;1.1 Problem Statement<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1.2 Objectives<br><br>
+
+<b>2. Data Extraction and Cleaning</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.1 Data Retrieval<br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.2 HTML and JSON-LD Extraction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.3 Data Cleaning and Derived Variables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.3.1 Decade<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.3.2 Number of Genres<br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.4 Genre Restructuring<br><br>
+
+<b>3. Analysis &amp; Visualizations along with Key Analytical Questions &amp; Findings</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.1 Shiny Application Presentation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.1 Plot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.2 Analysis<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.3 Data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.2 Rating Distribution<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.3 Popularity and Ranking<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.4 Genre Analysis<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.5 Action &amp; Adventure Interactive Comparison<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.6 Temporal Analysis<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.7 Interactive Data Exploration<br><br>
+
+<b>4. Code Summary and Important Functions</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.1 Package Setup<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.2 scrape_games()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.3 load_games()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.4 Derived Variables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.5 separate_rows()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.6 Formatting Helper Functions<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.7 spear()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.8 strength()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.9 direction()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.10 Genre Co-Occurrence Function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.11 make_plot()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.12 make_analysis()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.13 reactive()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.14 renderPlot()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.15 renderUI()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.16 Rating Summary<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.17 renderDT()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.18 Download Handlers<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.19 Overall Application Architecture<br><br>
+
+<b>5. Limitations and Ethical Considerations</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;5.1 Sampling and Selection Bias<br>
+&nbsp;&nbsp;&nbsp;&nbsp;5.2 Genre Classification<br>
+&nbsp;&nbsp;&nbsp;&nbsp;5.3 Vote Count Bias<br>
+&nbsp;&nbsp;&nbsp;&nbsp;5.4 Ranking and Rating Limitations<br>
+&nbsp;&nbsp;&nbsp;&nbsp;5.5 Statistical Limitations<br>
+&nbsp;&nbsp;&nbsp;&nbsp;5.6 Web Scraping and Reproducibility<br><br>
+
+<b>6. Reproducibility and Environment Setup</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;6.1 Required Packages<br>
+&nbsp;&nbsp;&nbsp;&nbsp;6.2 Recommended Folder Structure<br>
+&nbsp;&nbsp;&nbsp;&nbsp;6.3 Running the Shiny Application<br>
+&nbsp;&nbsp;&nbsp;&nbsp;6.4 Rendering the R Markdown Report<br><br>
+
+<b>7. Conclusion</b>
+
+</div>
+The table of contents generated by R Markdown is intentionally treated as **front matter**, not as a numbered report section. The numbered report begins with **1. Approach to the Project**, following the organization of the previous SDS208 report.
+
+```{r setup, include=FALSE}
+library(shiny)
+library(bslib)
+library(rvest)
+library(jsonlite)
+library(tidyverse)
+library(scales)
+library(DT)
+
+# ------------------------------------------------------------
+# Locate the cleaned CSV.
+# The report can be knitted from several common folder layouts.
+# ------------------------------------------------------------
+
+csv_candidates <- c(
+  "IMDb_Video_Game_Cleaned_Data.csv",
+  file.path("data", "IMDb_Video_Game_Cleaned_Data.csv"),
+  file.path("..", "IMDb_Video_Game_Cleaned_Data.csv"),
+  file.path("..", "data", "IMDb_Video_Game_Cleaned_Data.csv")
+)
+
+csv_candidates <- unique(csv_candidates[file.exists(csv_candidates)])
+
+if (length(csv_candidates) == 0) {
+  stop(
+    paste0(
+      "Could not find IMDb_Video_Game_Cleaned_Data.csv. ",
+      "Place the CSV either beside this Rmd file or inside a data/ folder."
+    )
+  )
+}
+
+CSV_PATH <- csv_candidates[1]
+
+# ------------------------------------------------------------
+# Read the cleaned dataset.
+# ------------------------------------------------------------
+
+games <- read.csv(
+  CSV_PATH,
+  stringsAsFactors = FALSE
+)
+
+# ------------------------------------------------------------
+# Normalize common column names if necessary.
+# This allows the report to work with the cleaned project file.
+# ------------------------------------------------------------
+
+if ("release_year" %in% names(games) && !"year" %in% names(games)) {
+  games <- games |> rename(year = release_year)
+}
+
+if ("title" %in% names(games) && !"name" %in% names(games)) {
+  games <- games |> rename(name = title)
+}
+
+# ------------------------------------------------------------
+# Derived variables.
+# ------------------------------------------------------------
+
+games <- games |>
+  mutate(
+    decade = floor(year / 10) * 10,
+    n_genres = ifelse(
+      is.na(genre) | genre == "",
+      NA,
+      str_count(genre, ",") + 1
+    )
+  )
+
+# ------------------------------------------------------------
+# Long-format genre dataset.
+# ------------------------------------------------------------
+
+games_genre <- games |>
+  separate_rows(genre, sep = ",\\s*") |>
+  mutate(
+    genre = str_trim(genre)
+  ) |>
+  filter(
+    !is.na(genre),
+    genre != ""
+  )
+```
+
+# 1. Approach to the Project
+
+## Problem Statement
+
+The earlier version of this project focused primarily on extracting the IMDb Top 250 Rated Video Games dataset and producing static exploratory visualizations. The revised project keeps the same analytical subject but changes the central objective: the analysis is now presented through an interactive **Shiny application**.
+
+The dataset contains several related dimensions, including IMDb rank, rating, vote count, release year, and multiple genre labels. A fixed collection of graphs is useful for analysis, but it does not allow a viewer to choose the next analytical question, change the scope of a genre analysis, or immediately inspect the observations behind a visualization.
+
+The revised project addresses this limitation by converting the analytical workflow into an interactive interface.
+
+The user can:
+
+1. select an analytical visualization;
+2. change the Action & Adventure genre filter;
+3. inspect the resulting graph;
+4. read dynamically generated findings;
+5. inspect the underlying dataset.
+
+The project therefore moves from **static exploratory data analysis toward interactive analytical communication**, with the Shiny application becoming the main project deliverable.
+
+## Objectives
+
+The main objectives of the revised project are:
+
+- Build a presentation-ready Shiny application for the IMDb Top 250 Video Games dataset.
+- Preserve the earlier data extraction and cleaning workflow.
+- Use `bslib` to create a structured and visually consistent interface.
+- Provide multiple analytical visualizations through a single plot-selection mechanism.
+- Allow Action and Adventure genres to be included or excluded interactively.
+- Generate analytical interpretations dynamically.
+- Provide an interactive data table using `DT`.
+- Connect numerical summaries, visualizations, interpretation, and raw observations.
+- Use R Markdown to document the methodology and application architecture.
+- Explain the important functions and programming concepts used in the Shiny code.
+- Make the application suitable for live SDS208 presentation.
+
+# 2. Data Extraction and Cleaning
+
+## Data Retrieval
+
+The project uses two possible data sources:
+
+1. the cleaned CSV file;
+2. a saved IMDb HTML snapshot.
+
+The cleaned CSV is preferred during normal application execution. If the CSV is unavailable, the application can use the saved HTML page and reconstruct the dataset through the scraping function.
+
+The basic loading logic in the Shiny application is:
+
+```{r, eval=FALSE}
+load_games <- function() {
+
+  if (file.exists(CSV_PATH)) {
+
+    read.csv(
+      CSV_PATH,
+      stringsAsFactors = FALSE
+    )
+
+  } else if (file.exists(HTML_PATH)) {
+
+    scrape_games(HTML_PATH)
+
+  } else {
+
+    stop("Data not found.")
+
+  }
+}
+```
+
+This design avoids unnecessary web scraping during a normal presentation.
+
+## HTML and JSON-LD Extraction
+
+The fallback scraping process uses `rvest` and `jsonlite`.
+
+The HTML page is first loaded using:
+
+```r
+read_html()
+```
+
+The page is then queried using CSS selectors through functions such as:
+
+```r
+html_elements()
+html_element()
+html_text()
+```
+
+The application also reads structured JSON-LD information embedded in the HTML page.
+
+The JSON-LD data provides structured information such as:
+
+- game rating;
+- number of votes;
+- genre.
+
+This combination allows the project to obtain both textual information such as titles and years and structured numerical information such as ratings and vote counts.
+
+## Data Cleaning and Derived Variables
+
+After loading the data, the application creates two important derived variables.
+
+### Decade
+
+The release year is converted into a decade using:
+
+```r
+decade = floor(year / 10) * 10
+```
+
+For example:
+
+```text
+1998 → 1990
+2005 → 2000
+2017 → 2010
+```
+
+This makes decade-level comparisons possible.
+
+### Number of Genres
+
+The number of genre labels is calculated using:
+
+```r
+n_genres = ifelse(
+  is.na(genre) | genre == "",
+  NA,
+  str_count(genre, ",") + 1
+)
+```
+
+For example:
+
+```text
+Action, Adventure, RPG
+```
+
+contains two commas and therefore three genre labels.
+
+## Genre Restructuring
+
+A single game can contain multiple genre labels.
+
+For example:
+
+```text
+Game A | Action, Adventure, RPG
+```
+
+is transformed conceptually into:
+
+```text
+Game A | Action
+Game A | Adventure
+Game A | RPG
+```
+
+The application uses:
+
+```r
+games_genre <- games |>
+  separate_rows(genre, sep = ",\\s*") |>
+  mutate(genre = str_trim(genre)) |>
+  filter(!is.na(genre), genre != "")
+```
+
+This produces a long-format dataset called `games_genre`.
+
+The original `games` dataset remains at the game level, while `games_genre` is used for genre-specific analysis.
+
+This distinction is important because a game can belong to multiple genres.
+
+#. Analysis & Visualizations along with Key Analytical Questions & Findings
+
+## Shiny Application Presentation
+
+The Shiny application is the primary presentation component of the revised project.
+
+The interface is built using:
+
+```r
+page_sidebar()
+```
+
+from the `bslib` package.
+
+The application uses the `flatly` Bootstrap theme.
+
+The sidebar contains:
+
+- a grouped plot selector;
+- an Action & Adventure switch;
+- a rating summary.
+
+The main interface contains three tabs:
+
+### Plot
+
+Displays the selected visualization.
+
+### Analysis
+
+Displays dynamically generated analytical interpretation.
+
+### Data
+
+Displays the underlying dataset using an interactive `DT` table.
+
+The application contains 18 user-selectable visualizations.
+
+| Group | Main purpose | Views |
+|---|---|---:|
+| Distributions | Rating and vote distributions | 2 |
+| Popularity & ranking | Ratings, votes and ranking | 5 |
+| Genres | Genre frequencies and comparisons | 6 |
+| Time | Year and decade patterns | 5 |
+| **Total** | | **18** |
+
+The central design idea is:
+
+**user selection → reactive computation → visualization → dynamic interpretation → data**
+
+## Rating Distribution
+
+The rating distribution is one of the basic descriptive analyses.
+
+```{r rating-distribution, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Distribution of IMDb ratings across the Top 250 video games."}
+
+ggplot(games, aes(rating)) +
+  geom_histogram(
+    binwidth = 0.2,
+    color = "black"
+  ) +
+  geom_vline(
+    xintercept = mean(games$rating, na.rm = TRUE),
+    linetype = "dashed",
+    linewidth = 1
+  ) +
+  labs(
+    title = "Distribution of IMDb Ratings",
+    subtitle = "Dashed line represents the mean rating",
+    x = "IMDb Rating",
+    y = "Number of Games"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+The Shiny analysis associated with this graph calculates descriptive quantities such as:
+
+- mean;
+- median;
+- standard deviation;
+- minimum;
+- maximum;
+- number of highly rated games;
+- most populated rating interval.
+
+Because the dataset is already restricted to the Top 250, this distribution should not be interpreted as the rating distribution of all video games.
+
+## Vote Distribution
+
+Vote counts are strongly uneven, so a logarithmic scale is useful.
+
+```{r vote-distribution, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Distribution of IMDb vote counts using a logarithmic scale."}
+
+ggplot(games, aes(votes)) +
+  geom_histogram(
+    bins = 30,
+    color = "black"
+  ) +
+  scale_x_log10(
+    labels = comma
+  ) +
+  labs(
+    title = "Distribution of IMDb Votes",
+    x = "Number of Votes (log scale)",
+    y = "Number of Games"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+The application also examines the difference between the median and maximum vote counts and estimates how concentrated the total voting activity is among highly voted games.
+
+## Popularity and Ranking
+
+### Top 20 Most-Voted Games
+
+```{r top-votes, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Twenty games with the highest IMDb vote counts."}
+
+top20_votes <- games |>
+  slice_max(
+    votes,
+    n = 20,
+    with_ties = FALSE
+  )
+
+ggplot(
+  top20_votes,
+  aes(
+    reorder(name, votes),
+    votes
+  )
+) +
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(labels = comma) +
+  labs(
+    title = "Top 20 Games by Number of IMDb Votes",
+    x = "Game",
+    y = "Number of Votes"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+This graph answers:
+
+> Which games have attracted the largest number of IMDb votes?
+
+This is a popularity question rather than a pure quality question.
+
+### Top 15 Highest-Rated Games
+
+```{r top-rating, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Fifteen highest-rated games in the dataset."}
+
+top15_rating <- games |>
+  arrange(
+    desc(rating),
+    desc(votes)
+  ) |>
+  slice_head(n = 15)
+
+top15_rating$name <- factor(
+  top15_rating$name,
+  levels = rev(unique(top15_rating$name))
+)
+
+ggplot(
+  top15_rating,
+  aes(
+    rating,
+    name
+  )
+) +
+  geom_point(
+    aes(size = votes)
+  ) +
+  labs(
+    title = "Top 15 Highest-Rated Games",
+    subtitle = "Point size represents vote count",
+    x = "IMDb Rating",
+    y = "Game",
+    size = "Votes"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+This visualization demonstrates the difference between:
+
+- high rating;
+- high audience participation.
+
+A game may have an extremely high rating without being among the most-voted games.
+
+### Rank versus Rating
+
+```{r rank-rating, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Relationship between IMDb rank and rating."}
+
+ggplot(
+  games,
+  aes(rank, rating)
+) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(
+    method = "loess",
+    se = FALSE
+  ) +
+  labs(
+    title = "IMDb Rank vs Rating",
+    x = "IMDb Rank",
+    y = "IMDb Rating"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+Because smaller rank values represent better positions, an overall negative association is expected.
+
+The application additionally calculates a Spearman correlation.
+
+### Rank versus Votes
+
+```{r rank-votes, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Relationship between IMDb rank and vote count."}
+
+ggplot(
+  games,
+  aes(rank, votes)
+) +
+  geom_point(alpha = 0.6) +
+  scale_y_log10(labels = comma) +
+  geom_smooth(
+    method = "loess",
+    se = FALSE
+  ) +
+  labs(
+    title = "IMDb Rank vs Votes",
+    x = "IMDb Rank",
+    y = "Number of Votes (log scale)"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+This graph explores whether highly ranked games also tend to attract larger audiences.
+
+### Votes versus Rating
+
+```{r votes-rating, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Relationship between vote count and IMDb rating."}
+
+vote_rating_data <- games |>
+  filter(
+    !is.na(votes),
+    !is.na(rating),
+    votes > 0
+  )
+
+ggplot(
+  vote_rating_data,
+  aes(votes, rating)
+) +
+  geom_point(alpha = 0.6) +
+  scale_x_log10(labels = comma) +
+  geom_smooth(
+    method = "lm",
+    formula = y ~ log10(x),
+    se = FALSE
+  ) +
+  labs(
+    title = "Votes vs Rating",
+    x = "Number of Votes (log scale)",
+    y = "IMDb Rating"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+The Shiny application calculates multiple forms of association, including Pearson and Spearman correlation.
+
+A linear model using log-transformed votes is also used.
+
+The important interpretation is that **association does not imply causation**.
+
+## Genre Analysis
+
+Genre analysis provides one of the strongest demonstrations of Shiny interactivity.
+
+The application allows the user to include or exclude:
+
+- Action;
+- Adventure.
+
+This can substantially change the genre distribution because these labels are relatively broad.
+
+### Genre Frequency
+
+```{r genre-frequency, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Frequency of genre labels across the dataset."}
+
+genre_frequency <- games_genre |>
+  count(
+    genre,
+    sort = TRUE
+  )
+
+ggplot(
+  genre_frequency,
+  aes(
+    reorder(genre, n),
+    n
+  )
+) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Genre Frequency",
+    x = "Genre",
+    y = "Number of Genre Associations"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+Because games may have multiple genres, these are counts of genre associations rather than mutually exclusive game categories.
+
+### Genre Composition
+
+```{r genre-composition, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Overall composition of genre labels."}
+
+ggplot(
+  genre_frequency,
+  aes(
+    "",
+    n,
+    fill = genre
+  )
+) +
+  geom_col(
+    width = 1,
+    color = "white"
+  ) +
+  coord_polar("y") +
+  labs(
+    title = "Genre Composition"
+  ) +
+  theme_void()
+```
+
+The pie chart provides an overall compositional view, while the bar chart is more suitable for exact comparisons.
+
+### Average Rating by Genre
+
+```{r genre-rating, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Average IMDb rating by genre for sufficiently represented genres."}
+
+genre_rating <- games_genre |>
+  group_by(genre) |>
+  summarise(
+    n = n_distinct(rank),
+    mean_rating = mean(
+      rating,
+      na.rm = TRUE
+    ),
+    .groups = "drop"
+  ) |>
+  filter(n >= 5) |>
+  arrange(mean_rating)
+
+ggplot(
+  genre_rating,
+  aes(
+    mean_rating,
+    reorder(genre, mean_rating)
+  )
+) +
+  geom_col() +
+  labs(
+    title = "Average Rating by Genre",
+    x = "Mean IMDb Rating",
+    y = "Genre"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+Genres with very small sample sizes are excluded from this particular comparison to avoid overinterpreting unstable averages.
+
+### Rating Distribution by Genre
+
+```{r genre-box, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Distribution of ratings by genre."}
+
+genre_box_data <- games_genre |>
+  filter(
+    genre %in% genre_rating$genre
+  )
+
+ggplot(
+  genre_box_data,
+  aes(
+    rating,
+    reorder(genre, rating, FUN = median)
+  )
+) +
+  geom_boxplot() +
+  labs(
+    title = "Rating Distribution by Genre",
+    x = "IMDb Rating",
+    y = "Genre"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+The box plot provides information about:
+
+- median;
+- spread;
+- interquartile range;
+- potential extreme observations.
+
+### Median Votes by Genre
+
+```{r genre-votes, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Median IMDb vote count by genre."}
+
+genre_votes <- games_genre |>
+  group_by(genre) |>
+  summarise(
+    n = n_distinct(rank),
+    median_votes = median(
+      votes,
+      na.rm = TRUE
+    ),
+    .groups = "drop"
+  ) |>
+  filter(n >= 5) |>
+  arrange(median_votes)
+
+ggplot(
+  genre_votes,
+  aes(
+    median_votes,
+    reorder(genre, median_votes)
+  )
+) +
+  geom_col() +
+  scale_x_continuous(labels = comma) +
+  labs(
+    title = "Median Votes by Genre",
+    x = "Median Number of Votes",
+    y = "Genre"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+This changes the question from:
+
+> Which genres have higher ratings?
+
+to:
+
+> Which genres attract larger audiences?
+
+### Number of Genres versus Rating
+
+```{r genre-count-rating, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Relationship between number of genre labels and IMDb rating."}
+
+ggplot(
+  games |> filter(!is.na(n_genres)),
+  aes(
+    n_genres,
+    rating
+  )
+) +
+  geom_jitter(
+    width = 0.12,
+    alpha = 0.55
+  ) +
+  geom_smooth(
+    method = "lm",
+    se = FALSE
+  ) +
+  labs(
+    title = "Number of Genres vs Rating",
+    x = "Number of Genre Labels",
+    y = "IMDb Rating"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+The application calculates a Spearman correlation between genre count and rating.
+
+The number of IMDb genre labels should not be interpreted as an objective measure of game complexity.
+
+## Action & Adventure Interactive Comparison
+
+The Action & Adventure switch is implemented through a reactive expression.
+
+Conceptually:
+
+```{r, eval=FALSE}
+gd <- reactive({
+
+  if (input$include_aa) {
+
+    games_genre
+
+  } else {
+
+    games_genre |>
+      filter(
+        !genre %in% c(
+          "Action",
+          "Adventure"
+        )
+      )
+  }
+
+})
+```
+
+This means the same application can immediately show:
+
+```text
+All genres
+      ↓
+Action + Adventure included
+```
+
+or:
+
+```text
+All genres
+      ↓
+Action + Adventure removed
+```
+
+without modifying the underlying dataset.
+
+This is one of the clearest demonstrations that the project is genuinely interactive.
+
+## Temporal Analysis
+
+### Mean Rating by Year
+
+```{r year-rating, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Mean IMDb rating by release year."}
+
+year_rating <- games |>
+  filter(
+    !is.na(year),
+    !is.na(rating)
+  ) |>
+  group_by(year) |>
+  summarise(
+    mean_rating = mean(
+      rating,
+      na.rm = TRUE
+    ),
+    n = n(),
+    .groups = "drop"
+  )
+
+ggplot(
+  year_rating,
+  aes(
+    year,
+    mean_rating
+  )
+) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Year-Wise Mean Rating",
+    x = "Release Year",
+    y = "Mean IMDb Rating"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+The application fits a simple linear model to estimate the change in average rating over time.
+
+### Games per Year
+
+```{r year-count, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Number of Top-250 games by release year."}
+
+year_count <- games |>
+  filter(!is.na(year)) |>
+  count(year)
+
+ggplot(
+  year_count,
+  aes(
+    year,
+    n
+  )
+) +
+  geom_col() +
+  labs(
+    title = "Number of Top-250 Games by Release Year",
+    x = "Release Year",
+    y = "Number of Games"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+This graph describes the composition of the Top 250 list over time rather than the total number of games released in each year.
+
+### Rating by Decade
+
+```{r decade-rating, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Rating distributions across release decades."}
+
+ggplot(
+  games |> filter(
+    !is.na(decade),
+    !is.na(rating)
+  ),
+  aes(
+    factor(decade),
+    rating
+  )
+) +
+  geom_boxplot() +
+  labs(
+    title = "Rating by Decade",
+    x = "Release Decade",
+    y = "IMDb Rating"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+The application uses a Kruskal-Wallis test to compare rating distributions across decades.
+
+This is a non-parametric approach and is suitable when the distributional assumptions required by standard parametric ANOVA are not desirable.
+
+### Genre Distribution by Decade
+
+```{r decade-genre, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Genre composition across release decades."}
+
+decade_genre <- games_genre |>
+  filter(!is.na(year)) |>
+  mutate(
+    decade = floor(year / 10) * 10
+  ) |>
+  count(
+    decade,
+    genre
+  )
+
+ggplot(
+  decade_genre,
+  aes(
+    "",
+    n,
+    fill = genre
+  )
+) +
+  geom_col(
+    width = 1
+  ) +
+  coord_polar("y") +
+  facet_wrap(~decade) +
+  labs(
+    title = "Genre Distribution by Decade"
+  ) +
+  theme_void()
+```
+
+The faceted representation shows the composition of genres within individual decades.
+
+### Genre Share by Decade
+
+```{r decade-share, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Proportional genre share by release decade."}
+
+decade_share <- decade_genre |>
+  group_by(decade) |>
+  mutate(
+    share = n / sum(n)
+  ) |>
+  ungroup()
+
+ggplot(
+  decade_share,
+  aes(
+    factor(decade),
+    share,
+    fill = genre
+  )
+) +
+  geom_col() +
+  scale_y_continuous(
+    labels = percent
+  ) +
+  labs(
+    title = "Genre Share by Decade",
+    x = "Release Decade",
+    y = "Share of Genre Tags"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+The proportional stacked chart is useful for comparing relative genre composition between decades.
+
+## Interactive Data Exploration
+
+The Data tab uses `DT` to provide an interactive representation of the game-level dataset.
+
+Conceptually:
+
+```r
+DT::datatable(
+  games,
+  options = list(
+    pageLength = 15,
+    scrollX = TRUE
+  ),
+  rownames = FALSE
+)
+```
+
+This allows users to:
+
+- browse observations;
+- move between pages;
+- inspect variables;
+- horizontally scroll through the dataset.
+
+The sidebar also displays:
+
+- mean;
+- median;
+- variance;
+- standard deviation.
+
+The resulting analytical chain is:
+
+**summary statistics → visualization → interpretation → raw data**
+
+This is particularly useful during a live presentation because a presenter can demonstrate how a conclusion relates back to actual observations.
+
+# 4 Code Summary and Important Functions
+
+This section explains the most important components of `final_project.R`.
+
+The purpose is not to reproduce the entire source code. Instead, it explains the major programming ideas and functions that make the Shiny application work.
+
+## Package Setup
+
+The project uses several R packages, each serving a specific purpose.
+
+```r
+library(shiny)
+library(bslib)
+library(rvest)
+library(jsonlite)
+library(tidyverse)
+library(scales)
+library(DT)
+```
+
+| Package | Purpose |
+|---|---|
+| `shiny` | Builds the interactive application |
+| `bslib` | Provides the Bootstrap-based interface |
+| `rvest` | Extracts information from HTML |
+| `jsonlite` | Processes JSON-LD data |
+| `tidyverse` | Data manipulation and visualization |
+| `scales` | Formatting numbers and axes |
+| `DT` | Interactive data tables |
+
+The project therefore combines:
+
+**web extraction + data manipulation + statistical analysis + visualization + reactive programming**
+
+## `scrape_games()`
+
+The `scrape_games()` function is responsible for reconstructing the dataset from the saved IMDb HTML snapshot.
+
+Its conceptual workflow is:
+
+```text
+HTML file
+   ↓
+read_html()
+   ↓
+HTML elements
+   ↓
+title / year
+   ↓
+JSON-LD
+   ↓
+rating / votes / genre
+   ↓
+clean data frame
+```
+
+The function uses `rvest` functions such as:
+
+```r
+read_html()
+html_elements()
+html_element()
+html_text()
+```
+
+and uses `jsonlite` to process structured JSON-LD information.
+
+The important advantage of this function is that the project retains a reproducible extraction pathway instead of depending entirely on a manually created dataset.
+
+## `load_games()`
+
+`load_games()` determines where the application gets its data.
+
+```r
+load_games <- function() {
+
+  if (file.exists(CSV_PATH)) {
+
+    read.csv(
+      CSV_PATH,
+      stringsAsFactors = FALSE
+    )
+
+  } else if (file.exists(HTML_PATH)) {
+
+    scrape_games(HTML_PATH)
+
+  } else {
+
+    stop("Data not found.")
+
+  }
+}
+```
+
+The logic is:
+
+```text
+CSV exists?
+   │
+   ├── Yes → read CSV
+   │
+   └── No
+        │
+        ↓
+   HTML exists?
+        │
+        ├── Yes → scrape HTML
+        │
+        └── No → stop
+```
+
+This is important for the Shiny application because the cleaned CSV can be loaded quickly during presentation.
+
+The HTML snapshot remains available as a fallback.
+
+## Derived Variables
+
+The code uses `mutate()` to create variables required by later analyses.
+
+```r
+games <- load_games() |>
+  mutate(
+    decade = floor(year / 10) * 10,
+    n_genres = ...
+  )
+```
+
+`mutate()` creates or modifies columns without changing the basic one-row-per-game structure.
+
+### `decade`
+
+```r
+floor(year / 10) * 10
+```
+
+converts individual years into decades.
+
+### `n_genres`
+
+The code counts genre separators to estimate the number of genre labels assigned to each game.
+
+This variable is then used in the analysis of:
+
+> Number of genres versus rating.
+
+## `separate_rows()`
+
+The project uses:
+
+```r
+separate_rows()
+```
+
+to transform a comma-separated genre field into a tidy long-format representation.
+
+For example:
+
+```text
+RPG, Adventure, Fantasy
+```
+
+becomes:
+
+```text
+RPG
+Adventure
+Fantasy
+```
+
+This is essential for operations such as:
+
+```r
+group_by(genre)
+count(genre)
+mean(rating)
+```
+
+It also makes genre filtering possible.
+
+## Formatting Helper Functions
+
+The application contains helper functions that make dynamically generated text more readable.
+
+### `fmt()`
+
+A formatting helper is used to display numerical values in a readable form.
+
+Conceptually:
+
+```r
+fmt <- function(x, d = 2) {
+  formatC(
+    x,
+    format = "f",
+    digits = d,
+    big.mark = ","
+  )
+}
+```
+
+For example, a large number can be displayed with comma separators.
+
+### `pct()`
+
+A percentage helper converts proportions into readable percentages.
+
+Conceptually:
+
+```r
+pct <- function(x, d = 1) {
+  paste0(
+    fmt(100 * x, d),
+    "%"
+  )
+}
+```
+
+Thus:
+
+```text
+0.253
+```
+
+can become:
+
+```text
+25.3%
+```
+
+These helpers are particularly useful because the application writes numerical results into dynamically generated sentences.
+
+## `spear()`
+
+The application uses a helper for Spearman correlation.
+
+Conceptually:
+
+```r
+spear <- function(a, b) {
+
+  suppressWarnings(
+    cor(
+      a,
+      b,
+      method = "spearman",
+      use = "complete.obs"
+    )
+  )
+
+}
+```
+
+Spearman correlation measures the strength and direction of a monotonic relationship.
+
+It is useful when:
+
+- variables are skewed;
+- relationships are not necessarily linear;
+- ranking is more important than exact numerical distance.
+
+For example, it can be used for relationships involving:
+
+- IMDb rank;
+- vote count;
+- rating;
+- number of genres.
+
+## `strength()`
+
+The application also converts correlation coefficients into human-readable descriptions.
+
+Conceptually:
+
+```r
+strength <- function(r) {
+
+  a <- abs(r)
+
+  if (is.na(a)) {
+    "undefined"
+  } else if (a < 0.1) {
+    "negligible"
+  } else if (a < 0.3) {
+    "weak"
+  } else if (a < 0.5) {
+    "moderate"
+  } else if (a < 0.7) {
+    "strong"
+  } else {
+    "very strong"
+  }
+
+}
+```
+
+This allows the application to generate statements such as:
+
+```text
+The relationship is weak.
+```
+
+rather than simply reporting a numerical correlation.
+
+## `direction()`
+
+Another helper identifies whether the association is positive or negative.
+
+Conceptually:
+
+```r
+direction <- function(r) {
+
+  if (is.na(r)) {
+    ""
+  } else if (r < 0) {
+    "negative"
+  } else {
+    "positive"
+  }
+
+}
+```
+
+This is particularly useful when constructing automatic analytical explanations.
+
+## Genre Co-Occurrence Function
+
+The application also contains logic for identifying genres that occur together.
+
+The basic idea is:
+
+```text
+Game A:
+Action + Adventure + RPG
+
+↓
+
+Action — Adventure
+Action — RPG
+Adventure — RPG
+```
+
+A function such as `cooc_pairs()` can construct these genre pairs.
+
+This allows the project to examine not just how frequently individual genres occur, but also which genres commonly appear together.
+
+This is an example of a higher-level analysis built from the long-format `games_genre` dataset.
+
+## `make_plot()`
+
+`make_plot()` is one of the most important functions in the Shiny application.
+
+Instead of creating a separate server output for every graph, the project uses one central plotting function.
+
+Conceptually:
+
+```r
+make_plot <- function(
+  id,
+  games,
+  gd,
+  include_aa
+) {
+
+  switch(
+    id,
+
+    rating_hist = {
+      # rating histogram
+    },
+
+    vote_hist = {
+      # vote histogram
+    },
+
+    top_votes = {
+      # top-voted games
+    },
+
+    top_rating = {
+      # highest-rated games
+    },
+
+    rank_rating = {
+      # rank versus rating
+    }
+
+    # additional plot cases...
+  )
+
+}
+```
+
+The important idea is that `id` determines which graph is returned.
+
+The workflow becomes:
+
+```text
+User selects plot
+       ↓
+input$plot_id
+       ↓
+make_plot()
+       ↓
+ggplot object
+       ↓
+renderPlot()
+       ↓
+Graph displayed
+```
+
+This makes the server code much more organized.
+
+## `make_analysis()`
+
+`make_analysis()` is the second major function in the application.
+
+Its purpose is to generate analytical interpretation corresponding to the currently selected visualization.
+
+The returned structure contains components such as:
+
+- what the graph shows;
+- key findings;
+- interpretation;
+- caveat.
+
+Conceptually:
+
+```text
+Selected graph
+      ↓
+make_analysis()
+      ↓
+statistical calculations
+      ↓
+findings
+      ↓
+interpretation
+      ↓
+caveat
+```
+
+For example, for a correlation plot the function can calculate:
+
+- correlation coefficient;
+- direction;
+- correlation strength;
+- regression information;
+- relevant caveats.
+
+This means that the written analysis displayed in the Shiny application is connected directly to the underlying calculations.
+
+## `reactive()`
+
+Reactive programming is the most important Shiny-specific concept in the project.
+
+For example:
+
+```r
+gd <- reactive({
+
+  if (input$include_aa) {
+
+    games_genre
+
+  } else {
+
+    games_genre |>
+      filter(
+        !genre %in% c(
+          "Action",
+          "Adventure"
+        )
+      )
+
+  }
+
+})
+```
+
+The value of `gd()` depends on the user's switch.
+
+When the user changes the switch, Shiny automatically recalculates the relevant reactive expression.
+
+Similarly:
+
+```r
+current_plot <- reactive(
+  make_plot(
+    input$plot_id,
+    games,
+    gd(),
+    input$include_aa
+  )
+)
+```
+
+means that the current plot depends on:
+
+- selected plot;
+- current genre dataset;
+- Action & Adventure switch.
+
+This is the core mechanism that makes the application interactive.
+
+## `renderPlot()`
+
+The selected plot is displayed using:
+
+```r
+output$main_plot <- renderPlot(
+  current_plot()
+)
+```
+
+`renderPlot()` tells Shiny:
+
+> Take the current plot and render it as graphical output.
+
+Whenever the reactive `current_plot()` changes, the graph updates automatically.
+
+## `renderUI()`
+
+The analytical interpretation is different because it consists of text and UI elements.
+
+The application therefore uses:
+
+```r
+output$analysis_ui <- renderUI(
+  render_analysis(
+    analysis(),
+    plot_label()
+  )
+)
+```
+
+`renderUI()` is useful when the interface itself needs to be generated dynamically.
+
+The analysis can contain:
+
+- headings;
+- paragraphs;
+- bullet points;
+- caveats.
+
+The corresponding helper function creates elements such as:
+
+```r
+h3()
+h5()
+p()
+tags$ul()
+tags$li()
+```
+
+This makes the Analysis tab dynamic rather than static.
+
+## Rating Summary
+
+The sidebar statistics use a table-rendering function.
+
+The main statistics are:
+
+```r
+mean()
+median()
+var()
+sd()
+```
+
+For example:
+
+```r
+mean(
+  games$rating,
+  na.rm = TRUE
+)
+```
+
+calculates the average rating while ignoring missing observations.
+
+The four primary summary statistics are:
+
+| Statistic | Meaning |
+|---|---|
+| Mean | Average rating |
+| Median | Middle rating |
+| Variance | Squared measure of dispersion |
+| Standard deviation | Typical spread around the mean |
+
+## `renderDT()`
+
+The interactive Data tab uses:
+
+```r
+renderDT()
+```
+
+together with:
+
+```r
+DT::datatable()
+```
+
+Conceptually:
+
+```r
+output$data_table <- renderDT({
+
+  datatable(
+    games,
+    options = list(
+      pageLength = 15,
+      scrollX = TRUE
+    )
+  )
+
+})
+```
+
+This converts a standard R data frame into an interactive table.
+
+The user can inspect the actual observations behind the graphs.
+
+This supports reproducibility and transparency.
+
+## Download Handlers
+
+The project code also contains `downloadHandler()` functionality for analytical outputs.
+
+The general Shiny pattern is:
+
+```r
+downloadHandler(
+  filename = function() {
+    ...
+  },
+
+  content = function(file) {
+    ...
+  }
+)
+```
+
+`downloadHandler()` allows the application to generate a file when the user requests a download.
+
+The important distinction is that a download handler defines the server-side download mechanism. A corresponding download button or link must also be exposed in the UI for the user to access it directly.
+
+## Overall Application Architecture
+
+The complete application can be represented as:
+
+```text
+             DATA
+              │
+      ┌───────┴────────┐
+      │                │
+   CSV file        HTML file
+      │                │
+      │          scrape_games()
+      │                │
+      └───────┬────────┘
+              ↓
+         load_games()
+              ↓
+        Data cleaning
+              ↓
+       games / games_genre
+              ↓
+        ┌─────┴─────┐
+        │           │
+     Shiny UI    Reactive layer
+        │           │
+        │      ┌────┴─────┐
+        │      ↓          ↓
+        │  make_plot()  make_analysis()
+        │      │          │
+        │      ↓          ↓
+        │ renderPlot() renderUI()
+        │      │          │
+        └──────┴────┬─────┘
+                    ↓
+              User Interface
+              │     │     │
+             Plot Analysis Data
+```
+
+This architecture demonstrates that the project is more than a collection of static graphs.
+
+The application combines:
+
+**data processing + statistical analysis + visualization + reactive programming + interactive presentation.**
+
+# 5 Limitations and Ethical Considerations
+
+## Sampling and Selection Bias
+
+The most important limitation is that the dataset contains only the IMDb Top 250 video games.
+
+It is therefore not a random sample of all video games.
+
+Consequently:
+
+- ratings are restricted toward the upper end;
+- rating variation is smaller than in a complete game population;
+- correlations involving rating may be affected by restricted range;
+- findings cannot be generalized to all video games.
+
+The project should therefore be interpreted as an analysis of the **IMDb Top 250 population**, not the entire video-game industry.
+
+## Genre Classification
+
+Genre labels are not mutually exclusive.
+
+A single game may simultaneously belong to:
+
+- Action;
+- Adventure;
+- RPG;
+- Fantasy;
+- Strategy.
+
+Therefore, genre frequency counts are counts of genre associations rather than exclusive categories.
+
+The Action & Adventure switch also demonstrates that analytical conclusions can change depending on which broad categories are included.
+
+## Vote Count Bias
+
+Vote counts depend on audience exposure and participation.
+
+A game with a large number of votes is not necessarily better than a game with fewer votes.
+
+Vote count can be influenced by:
+
+- popularity;
+- age;
+- accessibility;
+- franchise recognition;
+- platform availability;
+- audience demographics.
+
+Therefore, vote count is interpreted as an indicator of audience participation rather than objective quality.
+
+## 5.4 Ranking and Rating Limitations
+
+IMDb rank is not an independent quality measure.
+
+Rank is generated from IMDb's rating system and voting population.
+
+Consequently, analyses involving:
+
+```text
+rank ↔ rating
+```
+
+should not be interpreted as if rank and rating were completely independent measurements.
+
+## Statistical Limitations
+
+Correlation does not imply causation.
+
+For example, if vote count and rating are correlated, this does not establish that increasing the number of votes causes a rating to increase.
+
+Similarly, a temporal relationship between release year and rating does not establish that newer or older games are inherently better.
+
+The analyses are therefore descriptive and associative.
+
+## Web Scraping and Reproducibility
+
+The project uses a locally saved HTML snapshot rather than repeatedly scraping IMDb during application presentation.
+
+This has several advantages:
+
+- fewer external requests;
+- faster application startup;
+- greater reproducibility;
+- reduced dependence on live website availability.
+
+The project should nevertheless be operated in accordance with applicable website terms and access restrictions.
+
+# 6 Reproducibility and Environment Setup
+
+## Required Packages
+
+The project requires:
+
+```r
+shiny
+bslib
+rvest
+jsonlite
+tidyverse
+scales
+DT
+rmarkdown
+```
+
+Each package has a specific role in the workflow.
+
+
+## Running the Shiny Application
+
+The application ends with:
+
+```r
+shinyApp(
+  ui,
+  server
+)
+```
+
+The application can therefore be launched from RStudio or through the appropriate Shiny execution workflow.
+
+For the SDS208 presentation, a useful sequence is:
+
+1. Launch the application.
+2. Begin with the rating distribution.
+3. Demonstrate vote distribution.
+4. Move through ranking and popularity.
+5. Demonstrate the Action & Adventure switch.
+6. Explore genre analysis.
+7. Move to temporal analysis.
+8. Open the Analysis tab.
+9. Open the Data tab.
+
+This gives the Shiny application the dominant presentation role.
+
+## Rendering the R Markdown Report
+
+The report can be rendered using:
+
+```r
+library(rmarkdown)
+
+render(
+  "SDS208_Shiny_Report.Rmd"
+)
+```
+
+The report and application have different purposes.
+
+### Shiny Application
+
+Primary interactive presentation.
+
+### R Markdown Report
+
+Supporting documentation, methodology, graphs, statistical interpretation, code explanation, limitations, and reproducibility.
+
+The report therefore complements the application rather than replacing it.
+
+# Conclusion
+
+The revised SDS208 project transforms the earlier IMDb Top 250 Video Games analysis into an interactive Shiny application supported by an R Markdown report.
+
+The underlying workflow remains based on:
+
+- HTML extraction;
+- JSON-LD processing;
+- data cleaning;
+- descriptive statistics;
+- correlation;
+- regression;
+- genre analysis;
+- temporal analysis.
+
+However, these methods are now organized around an interactive interface.
+
+The application provides 18 selectable analytical views across:
+
+- distributions;
+- popularity and ranking;
+- genres;
+- time.
+
+Its central strength is the connection between **user interaction and dynamic interpretation**.
+
+Changing the selected visualization changes the analytical output, while the Action & Adventure switch allows the user to alter the scope of genre-based analysis.
+
+The project also demonstrates important Shiny programming concepts including:
+
+- reactive expressions;
+- dynamic plot generation;
+- dynamic UI generation;
+- interactive tables;
+- helper functions;
+- data transformation;
+- modular analytical functions.
+
+Functions such as `load_games()`, `scrape_games()`, `make_plot()`, and `make_analysis()` divide the application into logical components, making the code easier to understand and maintain.
+
+The R Markdown report complements the application by documenting the complete analytical process and providing static figures that demonstrate the analyses represented interactively in the application.
+

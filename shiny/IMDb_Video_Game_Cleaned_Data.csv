@@ -1,0 +1,251 @@
+"rank","name","rating","votes","genre","year","decade"
+1,"1. Red Dead Redemption II",9.8,84068,"Action, Adventure, Crime",2018,2010
+2,"2. The Last of Us",9.7,92485,"Action, Drama, Horror",2013,2010
+3,"3. Baldur's Gate III",9.6,10199,"Action, Adventure, Drama",2023,2020
+4,"4. Clair Obscur: Expedition 33",9.5,10108,"Action, Adventure, Drama",2025,2020
+5,"5. The Witcher 3: Wild Hunt",9.6,40872,"Action, Adventure, Drama",2015,2010
+6,"6. The Legend of Zelda: Ocarina of Time",9.6,12098,"Action, Adventure, Fantasy",1998,1990
+7,"7. Final Fantasy VII",9.4,12172,"Action, Adventure, Drama",1997,1990
+8,"8. God of War",9.5,48138,"Action, Adventure, Drama",2018,2010
+9,"9. God of War: Ragnarök",9.4,27444,"Action, Adventure, Drama",2022,2020
+10,"10. Mass Effect 2",9.5,23310,"Action, Adventure, Comedy",2010,2010
+11,"11. Metal Gear Solid",9.5,14340,"Action, Adventure, Drama",1998,1990
+12,"12. Metal Gear Solid 3: Snake Eater",9.5,12407,"Action, Adventure, Drama",2004,2000
+13,"13. Star Wars: Knights of the Old Republic",9.5,10226,"Action, Adventure, Fantasy",2003,2000
+14,"14. Batman: Arkham City",9.3,39685,"Action, Crime, Sci-Fi",2011,2010
+15,"15. Chrono Trigger",9.4,3609,"Action, Adventure, Fantasy",1995,1990
+16,"16. Elden Ring",9.4,17569,"Action, Adventure, Fantasy",2022,2020
+17,"17. Fallout 2: A Post-Nuclear Role-Playing Game",9.4,4637,"Action, Adventure, Sci-Fi",1998,1990
+18,"18. Baldur's Gate II: Shadows of Amn",9.4,2539,"Action, Adventure, Fantasy",2000,2000
+19,"19. Grand Theft Auto: San Andreas",9.4,51182,"Action, Crime",2004,2000
+20,"20. Grand Theft Auto V",9.4,86711,"Action, Crime, Drama",2013,2010
+21,"21. Half-Life 2",9.4,19505,"Action, Sci-Fi, Thriller",2004,2000
+22,"22. Kingdom Come: Deliverance II",9.3,2823,"Action, Adventure, Drama",2025,2020
+23,"23. Portal 2",9.4,20219,"Adventure, Comedy, Sci-Fi",2011,2010
+24,"24. Red Dead Redemption",9.4,38002,"Action, Adventure, Crime",2010,2010
+25,"25. Silent Hill 2",9.4,9531,"Drama, Horror, Mystery",2001,2000
+26,"26. The Legend of Zelda: Breath of the Wild",9.4,12572,"Action, Adventure, Fantasy",2017,2010
+27,"27. The Legend of Zelda: Tears of the Kingdom",9.4,4578,"Action, Adventure, Fantasy",2023,2020
+28,"28. Uncharted 4: A Thief's End",9.4,44727,"Action, Adventure, Drama",2016,2010
+29,"29. Astro Bot",9.2,2213,"Action, Adventure, Comedy",2024,2020
+30,"30. Cyberpunk 2077: Phantom Liberty",9.3,6011,"Action, Adventure, Crime",2023,2020
+31,"31. Death Stranding 2: On the Beach",9.3,3589,"Action, Adventure, Drama",2025,2020
+32,"32. Kingdom Hearts II",9.3,8159,"Action, Adventure, Family",2005,2000
+33,"33. Metal Gear Solid 4: Guns of the Patriots",9.3,11866,"Action, Adventure, Drama",2008,2000
+34,"34. Planescape: Torment",9.3,2311,"Adventure, Drama, Fantasy",1999,1990
+35,"35. Resident Evil 4",9.2,12296,"Action, Adventure, Drama",2023,2020
+36,"36. The Elder Scrolls V: Skyrim",9.3,37561,"Action, Adventure, Drama",2011,2010
+37,"37. The Secret of Monkey Island",9.3,3478,"Adventure, Comedy, Fantasy",1990,1990
+38,"38. Uncharted 2: Among Thieves",9.3,32066,"Action, Adventure, Fantasy",2009,2000
+39,"39. Resident Evil 4",9.2,17771,"Action, Adventure, Horror",2005,2000
+40,"40. Bloodborne",9.2,10478,"Action, Adventure, Fantasy",2015,2010
+41,"41. Deus Ex",9.1,3676,"Action, Adventure, Drama",2000,2000
+42,"42. Dispatch",9.2,7453,"Animation, Action, Adventure",2025,2020
+43,"43. Ghost of Tsushima",9.2,25656,"Action, Adventure, Drama",2020,2020
+44,"44. Grand Theft Auto: Vice City",9.2,33282,"Action, Crime",2002,2000
+45,"45. Half-Life: Alyx",9.2,1449,"Action, Adventure, Sci-Fi",2020,2020
+46,"46. Max Payne",9.2,17582,"Action, Crime, Drama",2001,2000
+47,"47. Monkey Island 2: LeChuck's Revenge",9.2,2676,"Adventure, Comedy, Fantasy",1991,1990
+48,"48. Shin Megami Tensei: Persona 4",9.1,1573,"Action, Adventure, Comedy",2008,2000
+49,"49. Persona 5",9.2,4035,"Action, Adventure, Comedy",2016,2010
+50,"50. P.T.",9.2,2879,"Horror, Mystery",2014,2010
+51,"51. Shadow of the Colossus",9.1,5195,"Action, Adventure, Drama",2005,2000
+52,"52. Super Mario World",9.2,6364,"Action, Adventure, Family",1990,1990
+53,"53. Super Mario Bros. 3",9.2,6573,"Action, Adventure, Family",1988,1980
+54,"54. The Legend of Zelda: A Link to the Past",9.2,4351,"Action, Adventure, Fantasy",1991,1990
+55,"55. The Walking Dead: A Telltale Game Series",9.2,18702,"Animation, Action, Adventure",2012,2010
+56,"56. Castlevania: Symphony of the Night",9.1,2123,"Action, Adventure, Fantasy",1997,1990
+57,"57. Alan Wake II",9.1,6858,"Action, Adventure, Crime",2023,2020
+58,"58. Batman: Arkham Asylum",9.1,36108,"Action, Crime, Mystery",2009,2000
+59,"59. Resident Evil 2",9.1,7529,"Action, Horror, Sci-Fi",1998,1990
+60,"60. BioShock",9.1,23983,"Action, Adventure, Horror",2007,2000
+61,"61. BioShock Infinite",9.1,24265,"Action, Adventure, Drama",2013,2010
+62,"62. Dark Souls III",9.1,8237,"Action, Adventure, Fantasy",2016,2010
+63,"63. Detroit: Become Human",9.1,32760,"Action, Adventure, Drama",2018,2010
+64,"64. Dragon Age: Origins",9.1,9585,"Action, Adventure, Fantasy",2009,2000
+65,"65. Fallout",9.1,4653,"Action, Adventure, Sci-Fi",1997,1990
+66,"66. Final Fantasy VI",9.1,3797,"Action, Adventure, Drama",1994,1990
+67,"67. Final Fantasy X",9.1,9143,"Adventure, Fantasy, Romance",2001,2000
+68,"68. God of War II",9.1,12671,"Action, Adventure, Fantasy",2007,2000
+69,"69. God of War III",9.1,15801,"Action, Adventure, Fantasy",2010,2010
+70,"70. GoldenEye 007",9.1,6581,"Action, Adventure, Thriller",1997,1990
+71,"71. Grim Fandango",9.1,3903,"Adventure, Comedy, Crime",1998,1990
+72,"72. Half-Life",9.1,12576,"Action, Sci-Fi, Thriller",1998,1990
+73,"73. Half-Life 2: Episode Two",9.1,7399,"Action, Adventure, Sci-Fi",2007,2000
+74,"74. Hollow Knight: Silksong",9.1,1952,"Animation, Action, Adventure",2025,2020
+75,"75. It Takes Two",9.1,6759,"Adventure, Comedy, Drama",2021,2020
+76,"76. Kingdom Hearts",9.1,8550,"Action, Adventure, Family",2002,2000
+77,"77. Mafia: The City of Lost Heaven",9.1,7191,"Action, Crime, Drama",2002,2000
+78,"78. Mass Effect",9.1,21580,"Action, Adventure, Drama",2007,2000
+79,"79. Mass Effect 3",9.1,18426,"Action, Adventure, Comedy",2012,2010
+80,"80. StarCraft",9.1,5778,"Action, Adventure, Sci-Fi",1998,1990
+81,"81. Silent Hill 2",9.1,5777,"Action, Adventure, Drama",2024,2020
+82,"82. Spider-Man",9.1,39151,"Action, Adventure, Fantasy",2018,2010
+83,"83. Super Mario 64",9.1,8196,"Action, Adventure, Comedy",1996,1990
+84,"84. Super Mario Galaxy",9.1,7083,"Action, Adventure, Family",2007,2000
+85,"85. Super Metroid",9.1,2708,"Action, Adventure, Horror",1994,1990
+86,"86. The Curse of Monkey Island",9.1,2968,"Animation, Action, Adventure",1997,1990
+87,"87. Assassin's Creed II",9,29363,"Action, Adventure, History",2009,2000
+88,"88. Baldur's Gate II: Throne of Bhaal",9,1429,"Action, Adventure, Fantasy",2001,2000
+89,"89. Batman: Arkham Knight",9,29622,"Action, Sci-Fi, Thriller",2015,2010
+90,"90. Resident Evil",9,6010,"Action, Adventure, Horror",2002,2000
+91,"91. Call of Duty 4: Modern Warfare",9,27041,"Action, Thriller",2007,2000
+92,"92. Dark Souls",9,7682,"Action, Adventure, Fantasy",2011,2010
+93,"93. Diablo II",9,5182,"Action, Adventure, Fantasy",2000,2000
+94,"94. Disco Elysium",9,2450,"Comedy, Crime, Drama",2019,2010
+95,"95. Fallout 3",9,22100,"Action, Adventure, Horror",2008,2000
+96,"96. Final Fantasy VII Rebirth",9,2280,"Action, Adventure, Drama",2024,2020
+97,"97. Ghost of Yōtei",8.9,3340,"Action, Drama, History",2025,2020
+98,"98. God of War",9,14102,"Action, Adventure, Fantasy",2005,2000
+99,"99. Heroes of Might and Magic III: The Restoration of Erathia",9,1562,"Action, Adventure, Fantasy",1999,1990
+100,"100. Indiana Jones and the Fate of Atlantis",9,1908,"Action, Adventure, Fantasy",1992,1990
+101,"101. Spider-Man 2",9,14458,"Action, Adventure, Crime",2023,2020
+102,"102. Max Payne 2: The Fall of Max Payne",9,12653,"Action, Crime, Drama",2003,2000
+103,"103. Metal Gear: Ghost Babel",9,1242,"Action, Adventure, Sci-Fi",2000,2000
+104,"104. Metal Gear Solid 2: Sons of Liberty",9,10286,"Action, Adventure, Drama",2001,2000
+105,"105. Omori",9,1625,"Adventure, Drama, Fantasy",2020,2020
+106,"106. Ori and the Will of the Wisps",8.9,2198,"Adventure, Family, Fantasy",2020,2020
+107,"107. Portal",9,16471,"Adventure, Comedy, Sci-Fi",2007,2000
+108,"108. Resident Evil 2",9,16491,"Action, Adventure, Horror",2019,2010
+109,"109. Sekiro: Shadows Die Twice",9,7319,"Action, Adventure, Fantasy",2019,2010
+110,"110. Shenmue",8.9,1412,"Action, Adventure, Crime",1999,1990
+111,"111. Silent Hill",9,7160,"Drama, Horror, Mystery",1999,1990
+112,"112. Split Fiction",9,2371,"Adventure, Fantasy, Sci-Fi",2025,2020
+113,"113. StarCraft: Brood War",9,2555,"Action, Adventure, Sci-Fi",1998,1990
+114,"114. Super Mario Galaxy 2",9,3779,"Action, Adventure, Family",2010,2010
+115,"115. Super Mario Odyssey",9,7326,"Action, Adventure, Family",2017,2010
+116,"116. Uncharted 3: Drake's Deception",8.9,28139,"Action, Adventure, Thriller",2011,2010
+117,"117. Vampire: The Masquerade - Bloodlines",9,2268,"Action, Drama, Fantasy",2004,2000
+118,"118. The Legend of Zelda: Majora's Mask",9,4631,"Action, Adventure, Family",2000,2000
+119,"119. The Legend of Zelda: The Wind Waker",9,4205,"Action, Adventure, Fantasy",2002,2000
+120,"120. The Legend of Zelda: Twilight Princess",9,5994,"Action, Adventure, Fantasy",2006,2000
+121,"121. The Longest Journey",8.9,1284,"Adventure, Drama, Fantasy",1999,1990
+122,"122. Baldur's Gate",8.8,2231,"Action, Adventure, Fantasy",1998,1990
+123,"123. Resident Evil",8.8,6661,"Animation, Action, Horror",1996,1990
+124,"124. Broken Sword: Circle of Blood",8.9,1329,"Adventure, Comedy, Drama",1996,1990
+125,"125. Day of the Tentacle",8.9,2137,"Animation, Adventure, Comedy",1993,1990
+126,"126. Fallout: New Vegas",8.9,16085,"Action, Adventure, Horror",2010,2010
+127,"127. EarthBound",8.9,1375,"Adventure, Comedy, Fantasy",1994,1990
+128,"128. Final Fantasy VII Remake",8.9,6580,"Action, Adventure, Drama",2020,2020
+129,"129. Grand Theft Auto IV",8.8,42824,"Action, Crime, Drama",2008,2000
+130,"130. Fire Emblem: Three Houses",8.8,1143,"Adventure, Drama, Family",2019,2010
+131,"131. Hollow Knight",8.9,6143,"Animation, Action, Adventure",2017,2010
+132,"132. Horizon Zero Dawn",8.8,22190,"Action, Adventure, Sci-Fi",2017,2010
+133,"133. Metal Gear Solid: The Twin Snakes",8.9,1858,"Action, Adventure, Drama",2004,2000
+134,"134. Paper Mario: The Thousand-Year Door",8.9,1221,"Adventure, Fantasy",2004,2000
+135,"135. Shin Megami Tensei: Persona 3",8.8,1102,"Action, Adventure, Drama",2006,2000
+136,"136. Star Wars: Knights of the Old Republic II - The Sith Lords",8.9,6090,"Action, Adventure, Drama",2004,2000
+137,"137. The Elder Scrolls IV: Oblivion",8.9,14080,"Action, Adventure, Fantasy",2006,2000
+138,"138. System Shock 2",8.9,1350,"Action, Adventure, Horror",1999,1990
+139,"139. Yakuza 0",8.9,2731,"Action, Crime, Drama",2015,2010
+140,"140. Warcraft III: Reign of Chaos",8.9,4195,"Action, Adventure, Fantasy",2002,2000
+141,"141. Warcraft III: The Frozen Throne",8.9,3988,"Action, Adventure, Fantasy",2003,2000
+142,"142. Age of Empires II: The Age of Kings",8.8,4100,"Action, Adventure, History",1999,1990
+143,"143. Black Myth: Wukong",8.7,2646,"Action, Adventure, Fantasy",2024,2020
+144,"144. Blade Runner",8.7,2119,"Mystery, Sci-Fi, Thriller",1997,1990
+145,"145. Call of Duty: Modern Warfare 2",8.8,28975,"Action, Thriller",2009,2000
+146,"146. Civilization II",8.8,1055,"Adventure, History",1996,1990
+147,"147. Conker's Bad Fur Day",8.7,1684,"Action, Adventure, Comedy",2001,2000
+148,"148. Dead Space",8.8,11481,"Action, Horror, Mystery",2008,2000
+149,"149. Dead Space",8.8,4384,"Action, Adventure, Horror",2023,2020
+150,"150. Dead Space 2",8.8,8004,"Action, Adventure, Horror",2011,2010
+151,"151. Far Cry 3",8.8,25257,"Action, Adventure, Crime",2012,2010
+152,"152. Final Fantasy IX",8.8,5878,"Action, Adventure, Fantasy",2000,2000
+153,"153. Hades",8.8,4061,"Action, Adventure, Fantasy",2018,2010
+154,"154. Halo 3",8.8,14073,"Action, Adventure, Sci-Fi",2007,2000
+155,"155. Horizon Forbidden West",8.8,8933,"Action, Adventure, Sci-Fi",2022,2020
+156,"156. Life Is Strange",8.8,17222,"Adventure, Drama, Mystery",2015,2010
+157,"157. Halo: Combat Evolved",8.8,13258,"Action, Sci-Fi, Thriller",2001,2000
+158,"158. Indiana Jones and the Great Circle",8.8,4172,"Action, Adventure, Fantasy",2024,2020
+159,"159. Metroid Prime",8.8,2461,"Action, Adventure, Mystery",2002,2000
+160,"160. Minecraft",8.8,20276,"Action, Adventure, Family",2009,2000
+161,"161. NieR: Automata",8.8,4886,"Action, Adventure, Drama",2017,2010
+162,"162. Okami",8.8,1489,"Action, Adventure, Fantasy",2006,2000
+163,"163. Pokémon: Red Version",8.8,3246,"Action, Adventure, Fantasy",1996,1990
+164,"164. Pokémon Gold Version",8.8,2071,"Action, Adventure, Fantasy",1999,1990
+165,"165. Pokémon Silver Version",8.8,1459,"Action, Adventure, Fantasy",1999,1990
+166,"166. South Park: The Stick of Truth",8.8,6645,"Animation, Action, Adventure",2014,2010
+167,"167. StarCraft II: Wings of Liberty",8.8,3849,"Action, Adventure, Sci-Fi",2010,2010
+168,"168. Star Wars: Battlefront II",8.8,8032,"Action, Adventure, Sci-Fi",2005,2000
+169,"169. Star Wars Jedi: Survivor",8.8,9707,"Action, Adventure, Drama",2023,2020
+170,"170. Super Mario Bros.",8.8,8191,"Action, Adventure, Fantasy",1985,1980
+171,"171. Super Smash Bros. Ultimate",8.8,5562,"Action, Adventure, Fantasy",2018,2010
+172,"172. Tales from the Borderlands",8.8,4951,"Animation, Action, Adventure",2014,2010
+173,"173. The Last of Us: Part II",8.8,54799,"Action, Drama, Horror",2020,2020
+174,"174. The Warriors",8.8,2424,"Action, Crime, Thriller",2005,2000
+175,"175. The Wolf Among Us",8.8,9950,"Animation, Action, Adventure",2013,2010
+176,"176. Undertale",8.8,6722,"Adventure, Comedy, Drama",2015,2010
+177,"177. Assassin's Creed: Brotherhood",8.7,19771,"Action, Adventure, Sci-Fi",2010,2010
+178,"178. Assassin's Creed IV: Black Flag",8.7,23470,"Action, Adventure, Drama",2013,2010
+179,"179. Command & Conquer: Red Alert 2",8.7,3476,"Action, Sci-Fi, War",2000,2000
+180,"180. Crash Bandicoot: Warped",8.7,3267,"Action, Adventure, Comedy",1998,1990
+181,"181. Death Stranding",8.7,14634,"Action, Adventure, Drama",2019,2010
+182,"182. Divinity: Original Sin II",8.7,1603,"Action, Adventure, Fantasy",2017,2010
+183,"183. Dragon Ball Z: Budokai Tenkaichi 3",8.8,1490,"Action, Adventure, Comedy",2007,2000
+184,"184. Fire Emblem: Awakening",8.7,1134,"Action, Adventure, Family",2012,2010
+185,"185. Final Fantasy VIII",8.7,6778,"Action, Adventure, Drama",1999,1990
+186,"186. Gears of War 2",8.7,6441,"Action, Sci-Fi, War",2008,2000
+187,"187. Half-Life 2: Episode One",8.7,6507,"Action, Adventure, Sci-Fi",2006,2000
+188,"188. Halo 2",8.7,11445,"Action, Adventure, Sci-Fi",2004,2000
+189,"189. Heavy Rain",8.7,16634,"Action, Adventure, Crime",2010,2010
+190,"190. Inside",8.7,6153,"Adventure, Horror, Mystery",2016,2010
+191,"191. Hitman: Blood Money",8.7,6451,"Action, Crime, Thriller",2006,2000
+192,"192. Medieval II: Total War",8.7,1421,"Action, History, War",2006,2000
+193,"193. Metal Gear Solid V: The Phantom Pain",8.7,9871,"Action, Adventure, Drama",2015,2010
+194,"194. Need for Speed: Most Wanted",8.7,9150,"Action, Crime, Sport",2005,2000
+195,"195. Outer Wilds",8.8,1774,"Adventure, Horror, Mystery",2019,2010
+196,"196. Pokémon: Blue Version",8.7,1602,"Action, Adventure, Fantasy",1996,1990
+197,"197. Pokémon Crystal Version",8.7,1409,"Action, Adventure, Fantasy",2000,2000
+198,"198. Pokémon Emerald Version",8.7,2109,"Action, Adventure, Fantasy",2004,2000
+199,"199. Ratchet & Clank: Up Your Arsenal",8.7,1805,"Action, Adventure, Comedy",2004,2000
+200,"200. Sam and Max Hit the Road",8.7,1159,"Animation, Adventure, Comedy",1993,1990
+201,"201. Sly 2: Band of Thieves",8.7,1597,"Action, Adventure, Comedy",2004,2000
+202,"202. StarCraft II: Heart of the Swarm",8.6,1835,"Action, Adventure, Sci-Fi",2013,2010
+203,"203. StarCraft II: Legacy of the Void",8.7,1229,"Action, Adventure, Sci-Fi",2015,2010
+204,"204. The Legend of Zelda: A Link Between Worlds",8.7,1993,"Action, Adventure, Fantasy",2013,2010
+205,"205. The Lord of the Rings: The Battle for Middle-Earth",8.7,2333,"Action, Adventure, Fantasy",2004,2000
+206,"206. The Walking Dead: The Final Season",8.7,5174,"Animation, Action, Adventure",2018,2010
+207,"207. The Walking Dead: Season Two",8.7,10503,"Animation, Action, Adventure",2013,2010
+208,"208. The Witcher 2: Assassins of Kings",8.7,7567,"Action, Adventure, Drama",2011,2010
+209,"209. Tomb Raider",8.7,24423,"Action, Adventure, Drama",2013,2010
+210,"210. Undying",8.7,1022,"Action, Horror, Mystery",2001,2000
+211,"211. Until Dawn",8.7,20739,"Action, Adventure, Comedy",2015,2010
+212,"212. Kingdom Hearts: Birth by Sleep",8.6,2010,"Action, Adventure, Family",2010,2010
+213,"213. Alien: Isolation",8.6,7661,"Action, Adventure, Horror",2014,2010
+214,"214. Banjo-Kazooie",8.6,2266,"Action, Adventure, Comedy",1998,1990
+215,"215. Resident Evil 3: Nemesis",8.6,5912,"Action, Horror, Sci-Fi",1999,1990
+216,"216. BioShock Infinite: Burial at Sea - Episode One",8.6,2788,"Action, Adventure, Drama",2013,2010
+217,"217. Borderlands 2",8.6,8345,"Action, Adventure, Comedy",2012,2010
+218,"218. Celeste",8.6,2197,"Action, Adventure, Comedy",2018,2010
+219,"219. Bully",8.6,7767,"Action, Crime, Drama",2006,2000
+220,"220. Chrono Cross",8.6,1049,"Action, Adventure, Drama",1999,1990
+221,"221. Civilization IV",8.6,1699,NA,2005,2000
+222,"222. Crash Team Racing",8.6,2450,"Action, Adventure, Family",1999,1990
+223,"223. Cuphead",8.6,5317,"Animation, Action, Adventure",2017,2010
+224,"224. Cyberpunk 2077",8.6,24029,"Action, Crime, Drama",2020,2020
+225,"225. Deltarune",8.6,1772,"Action, Adventure, Comedy",2018,2010
+226,"226. Donkey Kong Country 2: Diddy's Kong Quest",8.6,2259,"Action, Adventure",1995,1990
+227,"227. Donkey Kong Country",8.6,3781,"Animation, Action, Adventure",1994,1990
+228,"228. Doom",8.6,6451,"Action, Horror, Sci-Fi",1993,1990
+229,"229. Doom Eternal",8.6,5922,"Action, Horror, Sci-Fi",2020,2020
+230,"230. Grand Theft Auto III",8.6,19427,"Action, Crime",2001,2000
+231,"231. Halo: Reach",8.6,8765,"Action, Adventure, Sci-Fi",2010,2010
+232,"232. Ico",8.6,2007,"Adventure, Drama, Fantasy",2001,2000
+233,"233. Horizon Zero Dawn: The Frozen Wilds",8.6,2828,"Action, Adventure, Drama",2017,2010
+234,"234. L.A. Noire",8.6,18181,"Crime, Drama, Mystery",2011,2010
+235,"235. Mario Kart 64",8.6,4031,"Action, Family, Fantasy",1996,1990
+236,"236. Max Payne 3",8.6,12892,"Action, Crime, Drama",2012,2010
+237,"237. Perfect Dark",8.6,1783,"Action, Adventure, Sci-Fi",2000,2000
+238,"238. Pokémon: Yellow Version - Special Pikachu Edition",8.6,2022,"Action, Adventure, Fantasy",1998,1990
+239,"239. Prince of Persia: Warrior Within",8.6,4669,"Action, Adventure, Fantasy",2004,2000
+240,"240. Psychonauts",8.5,2230,"Action, Adventure, Comedy",2005,2000
+241,"241. Ratchet & Clank: Rift Apart",8.6,3388,"Action, Adventure, Comedy",2021,2020
+242,"242. Resident Evil 7: Biohazard",8.6,14951,"Action, Crime, Drama",2017,2010
+243,"243. Resident Evil Village",8.6,12239,"Action, Adventure, Drama",2021,2020
+244,"244. Rome: Total War",8.6,1947,"Action, Adventure, War",2004,2000
+245,"245. Sly 3: Honor Among Thieves",8.6,1329,"Action, Adventure, Comedy",2005,2000
+246,"246. Silent Hill 3",8.6,4955,"Drama, Horror, Mystery",2003,2000
+247,"247. Super Mario RPG: Legend of the Seven Stars",8.6,1387,"Action, Adventure, Comedy",1996,1990
+248,"248. Tom Clancy's Splinter Cell: Chaos Theory",8.6,3251,"Action, Adventure, Thriller",2005,2000
+249,"249. Super Smash Bros. Brawl",8.6,5710,"Action, Adventure, Fantasy",2008,2000
+250,"250. The Chronicles of Riddick: Escape from Butcher Bay",8.6,3801,"Action, Crime, Sci-Fi",2004,2000
